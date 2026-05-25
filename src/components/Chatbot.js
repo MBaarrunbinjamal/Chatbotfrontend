@@ -24,7 +24,7 @@ function Chatbot() {
     setMessages(prev => [...prev, { role: "user", text: prompt, time: getTime() }]);
     setLoading(true);
     try {
-      const res = await fetch("https://chatapi-a0fteo5gi-baarrun.vercel.app/chat", {
+      const res = await fetch("https://chatapi-jdq2bgs5q-baarrun.vercel.app/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
@@ -32,8 +32,8 @@ function Chatbot() {
       const data = await res.json();
       setMessages(prev => [...prev, { role: "bot", text: data.response || data.error, time: getTime() }]);
     } catch {
-      setMessages(prev => [...prev, { role: "bot", text: "Server not reachable. Make sure it's running on port 7000.", time: getTime() }]);
-    }
+  setMessages(prev => [...prev, { role: "bot", text: "Something went wrong. Please try again.", time: getTime() }]);
+}
     setLoading(false);
   }
 
