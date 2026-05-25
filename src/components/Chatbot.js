@@ -24,7 +24,7 @@ function Chatbot() {
     setMessages(prev => [...prev, { role: "user", text: prompt, time: getTime() }]);
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:7000/chat", {
+      const res = await fetch("https://chatapi-a0fteo5gi-baarrun.vercel.app/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
