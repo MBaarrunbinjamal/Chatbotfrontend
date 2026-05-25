@@ -24,7 +24,7 @@ function Chatbot() {
     setMessages(prev => [...prev, { role: "user", text: prompt, time: getTime() }]);
     setLoading(true);
     try {
-      const res = await fetch("https://chatapi-jdq2bgs5q-baarrun.vercel.app/chat", {
+      const res = await fetch("https://chatapi-nine-pink.vercel.app/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
