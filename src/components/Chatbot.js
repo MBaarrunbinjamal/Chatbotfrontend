@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Chatbot() {
   const [messages, setMessages] = useState([]);
@@ -52,7 +53,10 @@ function Chatbot() {
           <p style={styles.title}>Barrun's Assistant</p>
           <p style={styles.status}><span style={styles.dot} /> Online</p>
         </div>
-      
+      <div>
+        <Link to="/login" style={{ ...styles.badge, textDecoration: "none" }}>Login</Link>
+        <Link to="/register" style={{ ...styles.badge, textDecoration: "none" }}>Register</Link>
+      </div>
       </div>
 
       <div style={styles.messages}>

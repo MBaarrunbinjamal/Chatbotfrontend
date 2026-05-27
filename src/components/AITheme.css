@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-space: #060814;          /* Deep deep space dark */
+  --ai-cyan: #00f2fe;           /* Vibrant AI active indicator */
+  --ai-purple: #4facfe;         /* Core brand accent */
+  --glass-card: rgba(10, 15, 30, 0.7); /* Sleek dark tint glass */
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-focus: rgba(0, 242, 254, 0.5);
+  --text-bright: #f8fafc;       /* Crisp white for headings */
+  --text-muted: #94a3b8;        /* Silver-gray for subtitles/labels */
+}

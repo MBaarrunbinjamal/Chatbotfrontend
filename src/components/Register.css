@@ -1,0 +1,38 @@
+/* Inherits container and input styling smoothly from AILogin.css */
+
+.register-wide {
+  max-width: 500px; /* Slightly wider to give side-by-side inputs breathing room */
+}
+
+.ai-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Alternate pulse variant animation for registration card */
+.scanning {
+  animation: pulse-ring 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.8), 0 0 40px rgba(79, 172, 254, 0.4);
+  }
+}
+
+.ai-submit-btn.variants {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+@media (max-width: 520px) {
+  .ai-input-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
