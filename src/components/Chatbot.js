@@ -1,14 +1,23 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import Token from "./Token";
 
 function Chatbot() {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const bottomRef = useRef(null);
-  const textareaRef = useRef(null);
+  var tokenCtx = useContext(Token);
+  var [currentToken, setCurrentToken] = useState(tokenCtx);
 
-  const suggestions = ["Explain black holes", "Write a poem", "Debug my code", "Summarize a topic"];
+  function deleteToken() {
+    localStorage.removeItem("token");
+    setCurrentToken(null);
+  }
+
+  var [messages, setMessages] = useState([]);
+  var [input, setInput] = useState("");
+  var [loading, setLoading] = useState(false);
+  var bottomRef = useRef(null);
+  var textareaRef = useRef(null);
+
+  var suggestions = ["Explain black holes", "Write a poem", "Debug my code", "Summarize a topic"];
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -19,22 +28,22 @@ function Chatbot() {
   }
 
   async function sendMessage(text) {
-    const prompt = text || input.trim();
+    var prompt = text || input.trim();
     if (!prompt || loading) return;
     setInput("");
     setMessages(prev => [...prev, { role: "user", text: prompt, time: getTime() }]);
     setLoading(true);
     try {
-      const res = await fetch("https://chatapi-nine-pink.vercel.app/chat", {
+      var res = await fetch("https://chatapi-nine-pink.vercel.app/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
-      const data = await res.json();
+      var data = await res.json();
       setMessages(prev => [...prev, { role: "bot", text: data.response || data.error, time: getTime() }]);
     } catch {
-  setMessages(prev => [...prev, { role: "bot", text: "Something went wrong. Please try again.", time: getTime() }]);
-}
+      setMessages(prev => [...prev, { role: "bot", text: "Something went wrong. Please try again.", time: getTime() }]);
+    }
     setLoading(false);
   }
 
@@ -53,10 +62,16 @@ function Chatbot() {
           <p style={styles.title}>Barrun's Assistant</p>
           <p style={styles.status}><span style={styles.dot} /> Online</p>
         </div>
-      <div>
-        <Link to="/login" style={{ ...styles.badge, textDecoration: "none" }}>Login</Link>
-        <Link to="/register" style={{ ...styles.badge, textDecoration: "none" }}>Register</Link>
-      </div>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+          {currentToken !== null ? (
+            <button style={{ ...styles.badge, border: "none", cursor: "pointer" }} onClick={deleteToken}>Logout</button>
+          ) : (
+            <>
+              <Link to="/login" style={{ ...styles.badge, textDecoration: "none" }}>Login</Link>
+              <Link to="/register" style={{ ...styles.badge, textDecoration: "none" }}>Register</Link>
+            </>
+          )}
+        </div>
       </div>
 
       <div style={styles.messages}>
@@ -109,14 +124,15 @@ function Chatbot() {
     </div>
   );
 }
-const styles = {
+
+var styles = {
   app: { fontFamily: "DM Sans, sans-serif", background: "#0a0a0f", borderRadius: 20, border: "1px solid #2a2a3a", display: "flex", flexDirection: "column", height: 580, overflow: "hidden" },
   header: { padding: "16px 20px", borderBottom: "1px solid #2a2a3a", background: "#13131a", display: "flex", alignItems: "center", gap: 12 },
   avatar: { width: 38, height: 38, borderRadius: 12, background: "linear-gradient(135deg,#7c6af7,#c084fc)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 },
   title: { fontWeight: 600, fontSize: 15, color: "#f0f0f8", margin: 0 },
   status: { display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#6b6b8a", margin: 0 },
   dot: { width: 7, height: 7, borderRadius: "50%", background: "#34d399", display: "inline-block" },
-  badge: { marginLeft: "auto", fontSize: 11, padding: "4px 10px", borderRadius: 20, background: "rgba(124,106,247,0.12)", color: "#a78bfa", border: "1px solid rgba(124,106,247,0.25)" },
+  badge: { fontSize: 11, padding: "4px 10px", borderRadius: 20, background: "rgba(124,106,247,0.12)", color: "#a78bfa", border: "1px solid rgba(124,106,247,0.25)" },
   messages: { flex: 1, overflowY: "auto", padding: "20px 16px", display: "flex", flexDirection: "column", gap: 14 },
   empty: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10 },
   emptyIcon: { width: 52, height: 52, borderRadius: 16, background: "rgba(124,106,247,0.1)", border: "1px solid rgba(124,106,247,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 },
@@ -132,4 +148,5 @@ const styles = {
   input: { flex: 1, background: "#1c1c26", border: "1px solid #2a2a3a", borderRadius: 14, padding: "10px 14px", fontSize: 14, color: "#f0f0f8", resize: "none", outline: "none", fontFamily: "inherit" },
   sendBtn: { width: 42, height: 42, borderRadius: 12, background: "linear-gradient(135deg,#7c6af7,#a78bfa)", border: "none", cursor: "pointer", color: "#fff", fontSize: 16, flexShrink: 0 },
 };
+
 export default Chatbot;
